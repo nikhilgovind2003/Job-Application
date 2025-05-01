@@ -72,7 +72,7 @@ function MyJobs() {
               <p><strong>Salary:</strong> {job.salary}</p>
               <p><strong>Description:</strong> {job.description}</p>
               <div className="job-card-actions">
-                <Link to={`/edit-job/${job._id}`} className="edit-job-btn">Edit</Link>
+                <Link to={`/job/${job._id}/edit-job`} className="edit-job-btn">Edit</Link>
                 <button className="delete-job-btn" onClick={() => deleteJob(job._id)}>
                   Delete
                 </button>
