@@ -1,0 +1,75 @@
+/* Modal Overlay */
+.apply-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Content */
+.apply-content {
+  background-color: #fff;
+  padding: 32px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.apply-content h2 {
+  margin-bottom: 16px;
+  font-size: 1.4rem;
+  color: #222;
+}
+
+/* Textarea Styling */
+.apply-content textarea {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+/* Action Buttons */
+.apply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.apply-actions button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.apply-actions button[type='submit'] {
+  background-color: #28a745;
+  color: white;
+}
+
+.apply-actions button[type='submit']:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
