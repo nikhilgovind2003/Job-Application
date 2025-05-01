@@ -59,11 +59,31 @@ A full-stack Job Board Application built using the **MERN stack** (MongoDB, Expr
 
 ---
 
-## 🚀 Getting Started
-
-### 1. Clone the repository
-
+## 🚀 **Project Setup**
+## Backend Setup
+Navigate to the backend folder:
 ```bash
-git clone https://github.com/your-username/job-board-app.git
-cd job-board-app
+  cd backend
+```
+
+Install the backend dependencies:
+```bash
+  npm init -y
+  npm install express
+```
+
+## Frontend Setup
+Navigate to the frontend folder:
+Navigate to the backend folder:
+```bash
+  cd frontend
+```
+
+Install the React App:
+```bash
+npm create vite@latest my-vue-app -- --template vue 
+npm install
+npm run dev
+
+```
 
