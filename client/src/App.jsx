@@ -1,45 +1,60 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
-import Home from './pages/Home/Home';
-import Register from './pages/Register/Register';
-import Login from './pages/Login/Login';
-import CreateJob from './components/CreateJob/CreateJob.jsx';
-import MyJobs from './pages/MyJobs/MyJobs.jsx';
-import ApplyJob from './components/ApplyJob/ApplyJob.jsx';
-import PrivateRoute from './utils/PrivateRoute'; // Import PrivateRoute
-import AdminRoute from './utils/AdminRoute'; // Import AdminRoute
-import ViewApplicants from './pages/ViewApplicants/ViewApplicants.jsx'; // Import the new page
-import EditJob from './pages/EditJob/EditJob.jsx'; // Import the new page
-import { JobProvider } from './context/jobContext.jsx';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar/Navbar";
+import Home from "./pages/Home/Home";
+import Register from "./pages/Register/Register";
+import Login from "./pages/Login/Login";
+import CreateJob from "./pages/CreateJob/CreateJob";
+import MyJobs from "./pages/MyJobs/MyJobsPage";
+import ProtectedRoute from "./utils/PrivateRoute"; // ProtectedRoute for regular users
+import JobApplication from "./components/CoverLetterForm/CoverLetterForm";
+import NotFound from "./pages/PageNotFound/PageNotFound"; // Import the 404 page
+import ViewApplicants from "./components/ViewApplicant/ViewApplicant";
+
+import "./App.css";
 
 function App() {
   return (
-    <Router>
-
-      <JobProvider>
-        <Navbar />
-        <div className="container">
-          <Routes>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/:id" element={<ApplyJob />} />
-              <Route path="/my-jobs" element={<MyJobs />} />
-            </Route>
-
-            <Route element={<AdminRoute />}>
-              <Route path="/create-job" element={<CreateJob />} />
-              <Route path="/job/:jobId/applicants" element={<ViewApplicants />} />
-              <Route path="/job/:jobId/edit-job" element={<EditJob />} />
-
-            </Route>
-          </Routes>
-        </div>
-      </JobProvider>
-    </Router>
-
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/create-job"
+          element={
+            <ProtectedRoute>
+              <CreateJob />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-jobs"
+          element={
+            <ProtectedRoute>
+              <MyJobs />
+            </ProtectedRoute>
+          }
+        />
+        {/* User Routes */}
+        <Route
+          path="/apply/:jobId"
+          element={
+            <ProtectedRoute>
+              <JobApplication />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/view-applicants/:jobId" element={
+          <ProtectedRoute>
+            <ViewApplicants />
+          </ProtectedRoute>
+        } />
+        {/* Catch-all route for undefined routes */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </div>
   );
 }
 

@@ -31,8 +31,8 @@ export const getAllJobs = async (req, res) => {
 
 export const getMyJobs = async (req, res) => {
   try {
-    const jobs = await jobModel.find({ createdBy: req.user._id });
-    return res.status(200).json({ success: true, status: 200, data: jobs });
+    const jobs = await jobModel.find({ createdBy: req.user._id }).populate('createdBy', 'name email -_id');
+    return res.status(200).json({ success: true, jobs });
   } catch (error) {
     return res.status(500).json({ success: false, status: 500, message: 'Failed to fetch your jobs', error: error.message });
   }
@@ -69,7 +69,9 @@ export const updateJob = async (req, res) => {
 
 export const deleteJob = async (req, res) => {
   try {
+    console.log(req.params.id)
     const job = await jobModel.findById(req.params.id);
+
     if (!job) {
       return res.status(404).json({ success: false, status: 404, message: 'Job not found' });
     }

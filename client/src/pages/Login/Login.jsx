@@ -3,13 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// Redux imports
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/slices/auth/authSlice';
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validateForm = () => {
     const newErrors = {};
@@ -40,17 +42,13 @@ function Login() {
 
     try {
       const response = await axios.post('http://localhost:5000/api/v1/auth/login', formData);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('isAdmin', response.data.isAdmin);
-      toast.success('User logged in successfully!', {
-        position: 'top-right',
-        autoClose: 2000,
-      });
-
-      setTimeout(() => navigate('/'), 2000);
+      const { token, user } = response.data;
+      dispatch(login({ token, user }));
+      alert('User logged in successfully!');
+      navigate('/');
     } catch (error) {
       console.error('Login error:', error.response?.data?.message || error.message);
-      toast.error(error?.response?.data?.message, {
+      alert(error?.response?.data?.message || "Login failed", {
         position: 'top-right',
         autoClose: 3000,
       });
@@ -58,6 +56,7 @@ function Login() {
   };
 
   return (
+    <div className=' login-page'>
     <div className="login-container">
       <h1>Login</h1>
       <form onSubmit={handleSubmit} className="login-form">
@@ -86,8 +85,8 @@ function Login() {
       <p className="switch-auth">
         Don't have an account? <Link to="/register">Sign Up here</Link>
       </p>
-      <ToastContainer />
-    </div>
+      </div>
+      </div>
   );
 }
 

@@ -59,13 +59,18 @@ export const login = async (req, res) => {
       });
     }
 
+    const userWithoutPassword = user.toObject();
+    delete userWithoutPassword.password; // Remove password from user object
+    delete userWithoutPassword._id; // Remove _id from user object
+
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
       const token = generateToken(user._id);
       return res.status(200).json({
         success: true,
-      token,
-        isAdmin: user.isAdmin,
+        token,
+      user: userWithoutPassword,
       });
     }
   } catch (error) {

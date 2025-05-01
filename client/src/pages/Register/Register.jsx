@@ -43,7 +43,7 @@ function Register() {
     if (!validateForm()) return;
 
     try {
-    const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -75,43 +75,48 @@ function Register() {
   };
 
   return (
-    <div className="register-container">
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit} className="register-form">
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={formData.name}
-          onChange={handleChange}
-          className={errors.name ? 'input-error' : ''}
-        />
-        {errors.name && <p className="error-text">{errors.name}</p>}
+    <div className="register-page">
+      <div className="register-container">
+        <h1>Register</h1>
+        <form onSubmit={handleSubmit} className="register-form">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleChange}
+            className={errors.name ? 'input-error' : ''}
+          />
+          {errors.name && <p className="error-text">{errors.name}</p>}
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          className={errors.email ? 'input-error' : ''}
-        />
-        {errors.email && <p className="error-text">{errors.email}</p>}
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className={errors.email ? 'input-error' : ''}
+          />
+          {errors.email && <p className="error-text">{errors.email}</p>}
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className={errors.password ? 'input-error' : ''}
-        />
-        {errors.password && <p className="error-text">{errors.password}</p>}
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className={errors.password ? 'input-error' : ''}
+          />
+          {errors.password && <p className="error-text">{errors.password}</p>}
 
-        <button type="submit">Register</button>
-      </form>
+          <button type="submit">Register</button>
+        </form>
+        <div className="login-redirect">
+  Already have an account? <a href="/login">Login here</a>
+</div>
 
-      <ToastContainer />
+        <ToastContainer />
+      </div>
     </div>
   );
 }
