@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  getSingleJob,
   createJob,
   getAllJobs,
   getMyJobs,
@@ -17,6 +18,7 @@ router.get('/all-jobs', getAllJobs);
 router.use(protect);
 router.post('/', createJob);
 router.get('/my-jobs', getMyJobs);
+router.get('/singleJob/:id', getSingleJob);
 router.put('/:id', updateJob);
 router.delete('/:id', deleteJob);
 

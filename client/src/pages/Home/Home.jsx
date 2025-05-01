@@ -1,34 +1,35 @@
-import React, { useEffect, useState } from "react";
-import JobCard from "../../components/JobCard/JobCard.jsx";
-import "./Home.css";
-import axios from "axios";
+import React, { useEffect } from 'react';
+import JobCard from '../../components/JobCard/JobCard.jsx';
+import './Home.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchJobs } from '../../redux/slices/job/jobSlice'; // Import the fetchJobs action
 
 function Home() {
-  const [jobs, setJobs] = useState([]);
+  const dispatch = useDispatch();
 
+  // Access job data from Redux store
+  const { jobs, status, error } = useSelector((state) => state.job);
+
+  // Fetch jobs when the component mounts
   useEffect(() => {
-    const fetchJobs = async () => {
-      const response = await axios.get("http://localhost:5000/api/jobs/all-jobs", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      if (response.data.success) {
-        setJobs(response.data.data); // Update state with fetched jobs
-      }
-    };
-
-    fetchJobs();
-  }, []);
+    if (status === 'idle') {
+      dispatch(fetchJobs());
+    }
+  }, [dispatch, status]);
 
   return (
     <div className="home-container">
       <h1>All Jobs</h1>
+      {status === 'loading' && <p>Loading jobs...</p>}
+      {status === 'failed' && <p>Error: {error}</p>}
       <div className="job-list">
-        {jobs.map((job) => (
-          <JobCard key={job._id} job={job} showApplyButton={true} /> 
-        ))}
+        {jobs.length > 0 ? (
+          jobs.map((job) => (
+            <JobCard key={job._id} job={job} showApplyButton={true} />
+          ))
+        ) : (
+          <p>No jobs available</p>
+        )}
       </div>
     </div>
   );

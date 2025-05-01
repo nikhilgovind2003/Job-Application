@@ -1,26 +1,13 @@
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef } from "react";
 import "./JobCard.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
 const JobCard = ({ job, email, onDelete, showApplyButton }) => {
-  const descRef = useRef(null);
-  const isExpandedRef = useRef(false);
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
-
-  const MAX_LENGTH = 50;
-
-  const toggleDescription = () => {
-    if (!descRef.current) return;
-    if (isExpandedRef.current) {
-      descRef.current.textContent = job.description.slice(0, MAX_LENGTH);
-    } else {
-      descRef.current.textContent = job.description;
-    }
-    isExpandedRef.current = !isExpandedRef.current;
-  };
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const handleDelete = async () => {
     try {
@@ -38,50 +25,56 @@ const JobCard = ({ job, email, onDelete, showApplyButton }) => {
     }
   };
 
+  const toggleDescription = () => {
+    setShowFullDescription((prev) => !prev);
+  };
+
+  const descriptionWords = job.description?.split(" ") || [];
+  const shouldTruncate = descriptionWords.length > 100;
+
   return (
     <div className="job-card">
       <h3 className="job-title">{job.title}</h3>
+      {/* <div className="job-span"> */}
       <p className="job-company">{job.company}</p>
       <p className="job-location">{job.location}</p>
+    {/* </div> */}
       <p className="job-salary">₹ {job.salary}</p>
 
       <p className="job-description">
-        <span ref={descRef}>
-          {job.description.length > MAX_LENGTH
-            ? job.description.slice(0, MAX_LENGTH)
-            : job.description}
-        </span>
-        {job.description.length > MAX_LENGTH && (
-          <span className="read-more" onClick={toggleDescription}>
-            {isExpandedRef.current ? " Show less" : "... Read more"}
+        {showFullDescription || !shouldTruncate
+          ? job.description
+          : `${descriptionWords.slice(0, 100).join(" ")}...`}
+        {shouldTruncate && (
+          <span onClick={toggleDescription} className="read-more-toggle">
+            {showFullDescription ? " Show Less" : " Read More"}
           </span>
         )}
       </p>
 
-      {/* Show Apply Now button only on the Home page */}
       {showApplyButton && (
         <Link to={`/apply/${job._id}`} className="apply-btn">
           Apply Now
         </Link>
       )}
 
-      {/* Show Edit and Delete buttons only for job creators */}
       {user?.email === email && !showApplyButton && (
-        <div className="btns">
+        <div className="job-btns">
           <button
             onClick={() => navigate(`/edit-job/${job._id}`)}
-            className="edit"
+            className="job-edit-btn"
           >
             Edit
           </button>
-          <button onClick={handleDelete} className="delete">
+          <button onClick={handleDelete} className="job-delete-btn">
             Delete
           </button>
-
-          {/* Show View Applicants button only for job creators */}
-          <Link to={`/view-applicants/${job._id}`} className="view-applicants-btn">
+          <button
+            className="view-applicants-btn"
+            onClick={() => navigate(`/view-applicants/${job._id}`)}
+          >
             View Applicants
-          </Link>
+          </button>
         </div>
       )}
     </div>

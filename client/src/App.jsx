@@ -10,6 +10,7 @@ import ProtectedRoute from "./utils/PrivateRoute"; // ProtectedRoute for regular
 import JobApplication from "./components/CoverLetterForm/CoverLetterForm";
 import NotFound from "./pages/PageNotFound/PageNotFound"; // Import the 404 page
 import ViewApplicants from "./components/ViewApplicant/ViewApplicant";
+import EditJob from "./components/EditJob/EditJob.jsx";
 
 import "./App.css";
 
@@ -18,7 +19,6 @@ function App() {
     <div>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route
@@ -29,6 +29,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/" element={<ProtectedRoute>
+          <Home />
+          </ProtectedRoute>} />
         <Route
           path="/my-jobs"
           element={
@@ -37,7 +40,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* User Routes */}
         <Route
           path="/apply/:jobId"
           element={
@@ -51,7 +53,14 @@ function App() {
             <ViewApplicants />
           </ProtectedRoute>
         } />
-        {/* Catch-all route for undefined routes */}
+
+        <Route path="/edit-job/:jobId" element={
+          <ProtectedRoute>
+            <EditJob />
+          </ProtectedRoute>
+        } />
+
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

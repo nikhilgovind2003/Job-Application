@@ -1,5 +1,24 @@
 import { jobModel } from '../models/models.js';
 
+// Controller function to get a single job by ID
+export const getSingleJob = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const job = await jobModel.findById(id);
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: 'Job not found' });
+    }
+
+    return res.status(200).json({ success: true, data: job });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+
 export const createJob = async (req, res) => {
   try {
     const { title, description, company, location, salary } = req.body;

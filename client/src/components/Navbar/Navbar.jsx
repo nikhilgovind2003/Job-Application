@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/slices/auth/authSlice";
@@ -15,7 +16,10 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <h2 className="logo">JobBoard</h2>
+
+        <div className="Logo">
+          Logo
+        </div>
 
         <div className="menu-icon" onClick={toggleMenu}>
           {menuOpen ? <X /> : <Menu />}
